@@ -4,9 +4,6 @@ import logger from '../utils/logger';
 
 const analyzeMemeContent = async (openai: OpenAI, imageUrl: URL): Promise<string> => {
     logger.info('Initiating Stage 1: Meme analysis');
-    // sleep
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    return 'foo';
     const analysisResponse = await openai.chat.completions.create({
         model: config.analysisModelName,
         messages: [
@@ -30,8 +27,7 @@ const analyzeMemeContent = async (openai: OpenAI, imageUrl: URL): Promise<string
 };
 
 const generateMemeReview = async (openai: OpenAI, analysis: string): Promise<string> => {
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    return 'foo';
+    logger.info('Initiating Stage 2: Review generation');
     const reviewResponse = await openai.chat.completions.create({
         model: config.reviewModelName,
         messages: [
@@ -63,7 +59,7 @@ export const analyzeImage = async (imageUrl: URL, apiKey: string, signal?: Abort
         
         signal?.throwIfAborted();
         const review = await generateMemeReview(openai, analysis);
-
+        
         signal?.throwIfAborted();
         return review;
     } catch (error) {
